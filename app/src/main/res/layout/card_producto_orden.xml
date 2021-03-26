@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="producto"
+            type="com.dameray.rider.menu.model.CarritoModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent">
+
+        <TextView
+            android:id="@+id/lbl_cantidad_producto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textSize="@dimen/text_size_default"
+            android:text="@{``+ producto.cantidad}"
+            android:textColor="@color/primary"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/lbl_nombre_producto_orden"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/lbl_nombre_producto_orden"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_default"
+            android:text="@{producto.nombre}"
+            android:textColor="@color/primary"
+            android:layout_marginRight="@dimen/margin_default"
+            app:layout_constraintLeft_toRightOf="@id/lbl_cantidad_producto"
+            app:layout_constraintRight_toLeftOf="@+id/lbl_producto_total"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/lbl_producto_total"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_default"
+            android:text="@{String.valueOf(producto.total)}"
+            android:textColor="@color/primary"
+            android:layout_marginRight="@dimen/margin_default"
+            app:layout_constraintLeft_toRightOf="@id/lbl_nombre_producto_orden"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

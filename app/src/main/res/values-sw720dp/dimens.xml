@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Login -->
+    <dimen name="size_logo_login">290dp</dimen>
+    <dimen name="size_logo_register">195dp</dimen>
+    <dimen name="size_logo_land">120dp</dimen>
+    <dimen name="size_img_producto">110dp</dimen>
+    <dimen name="size_icon_menu">50dp</dimen>
+    <dimen name="size_img_categoria">25dp</dimen>
+
+    <!-- Margenes -->
+    <dimen name="margin_top_logo">45dp</dimen>
+    <dimen name="margin_sides_login">50dp</dimen>
+    <dimen name="margin_default">15dp</dimen>
+    <dimen name="margin_tiny">10dp</dimen>
+    <dimen name="margin_logo_flash">260dp</dimen>
+    <dimen name="margin_logo_register">130dp</dimen>
+    <!-- Text -->
+    <dimen name="text_size_default">24sp</dimen>
+    <dimen name="text_size">31sp</dimen>
+    <dimen name="text_size_small">18sp</dimen>
+    <!-- BOTONES -->
+    <dimen name="button_minimun">60dp</dimen>
+
+    <!-- ICON -->
+    <dimen name="ic_close">40dp</dimen>
+</resources>

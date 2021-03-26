@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".login.LoginActivity">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/size_logo_login"
+        android:layout_height="@dimen/size_logo_login"
+        android:src="@drawable/dameray_logo"
+        app:layout_constraintBottom_toTopOf="@id/form_email_login"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/name_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/text_size_default"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/form_email_login"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/form_email_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:padding="@dimen/margin_default"
+        android:layout_marginLeft="@dimen/margin_sides_login"
+        android:layout_marginRight="@dimen/margin_sides_login"
+        app:layout_constraintBottom_toTopOf="@id/form_password_login"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo">
+
+        <TextView
+            android:id="@+id/lbl_email_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_email"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/lbl_error_email_login"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/txt_correo"/>
+
+        <TextView
+            android:id="@+id/lbl_error_email_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toRightOf="@id/lbl_email_login"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/txt_correo"/>
+
+        <EditText
+            android:id="@+id/txt_correo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:textSize="@dimen/text_size_default"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/form_password_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_tiny"
+        android:layout_marginLeft="@dimen/margin_sides_login"
+        android:layout_marginRight="@dimen/margin_sides_login"
+        app:layout_constraintBottom_toTopOf="@+id/check_remember"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/form_email_login">
+
+        <TextView
+            android:id="@+id/lbl_password_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_password"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/lbl_error_password_login"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/txt_password"/>
+
+        <TextView
+            android:id="@+id/lbl_error_password_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toRightOf="@id/lbl_password_login"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/txt_password"/>
+
+        <EditText
+            android:id="@+id/txt_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:textSize="@dimen/text_size_default"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/lbl_forget_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_forget_password"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_default"
+        android:layout_marginLeft="@dimen/margin_sides_login"
+        android:layout_marginRight="@dimen/margin_sides_login"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/form_password_login"
+        app:layout_constraintBottom_toTopOf="@id/button_login"/>
+
+
+    <CheckBox
+        android:id="@+id/check_remember"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recordar contraseña"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/text_size_default"
+        android:layout_marginLeft="@dimen/margin_sides_login"
+        android:layout_marginRight="@dimen/margin_sides_login"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/form_password_login"
+        app:layout_constraintBottom_toTopOf="@id/button_login"/>
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:background="@drawable/button_main"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:text="@string/label_init_sesion"
+        android:textColor="@color/white"
+        android:layout_marginLeft="@dimen/margin_sides_login"
+        android:layout_marginRight="@dimen/margin_sides_login"
+        app:layout_constraintBottom_toTopOf="@id/lbl_register"
+        app:layout_constraintTop_toBottomOf="@+id/check_remember"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/lbl_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_register"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_default"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:layout_marginLeft="@dimen/margin_sides_login"
+        android:layout_marginRight="@dimen/margin_sides_login"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_login"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

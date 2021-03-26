@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">DAMERAY RIDER</string>
+    <string name="label_email">Correo</string>
+    <string name="label_password">Contraseña</string>
+    <string name="label_repeat">Repetir Contraseña</string>
+    <string name="label_forget_password">¿Has olvidado tu contraseña?</string>
+    <string name="label_init_sesion">Iniciar Sesión</string>
+
+    <string name="label_aceptar">Aceptar</string>
+    <string name="label_regisra">Registrar</string>
+
+    <string name="label_register">¡Registrate!</string>
+    <string name="label_check_phone">Verificar telefono</string>
+    <string name="label_check">Numero de telefono:</string>
+    <string name="enter_code">Ingresar Codigo:</string>
+    <string name="label_check_code">Verificar Codigo</string>
+
+    <string name="label_nombre">Nombres</string>
+    <string name="label_telefono">Telefono</string>
+    <string name="label_apellido">Apellidos</string>
+    <string name="title_activity_maps">Map</string>
+
+
+</resources>

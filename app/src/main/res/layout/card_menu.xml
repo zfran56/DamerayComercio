@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="menu"
+            type="com.dameray.rider.menu.model.MenuModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root"
+        android:padding="@dimen/margin_default"
+        android:layout_width="match_parent"
+        android:background="@{menu.fondo ? @color/colorMenuSelect : @color/colorMenu}"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/live_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@{menu.icon}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/live_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{ menu.alias }"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/live_icon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

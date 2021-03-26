@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "951157683023",
+    "firebase_url": "https://dameray-9f485.firebaseio.com",
+    "project_id": "dameray-9f485",
+    "storage_bucket": "dameray-9f485.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951157683023:android:b237decba5bdde287a0b3a",
+        "android_client_info": {
+          "package_name": "com.dameray.rider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951157683023-8tv3u3tonu3tc8ns1t4qmpctj57qioi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzxtaiJv-I2g9xYZrZd2xSMpN0My2m7JY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951157683023-8tv3u3tonu3tc8ns1t4qmpctj57qioi4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951157683023:android:87d618208767b1c77a0b3a",
+        "android_client_info": {
+          "package_name": "com.example.dameraapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951157683023-8tv3u3tonu3tc8ns1t4qmpctj57qioi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzxtaiJv-I2g9xYZrZd2xSMpN0My2m7JY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951157683023-8tv3u3tonu3tc8ns1t4qmpctj57qioi4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951157683023:android:2c4e3bb9f758308a7a0b3a",
+        "android_client_info": {
+          "package_name": "com.example.servicestask"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951157683023-8tv3u3tonu3tc8ns1t4qmpctj57qioi4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzxtaiJv-I2g9xYZrZd2xSMpN0My2m7JY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951157683023-8tv3u3tonu3tc8ns1t4qmpctj57qioi4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#001064</color>
+    <color name="colorPrimaryDark">#001064</color>
+    <color name="colorPrimaryDarkMenu">#35A2EB</color>
+    <color name="colorMenuSelect">#001064</color>
+    <color name="colorMenu">#283593</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="md_purple_50">#F3E5F5</color>
+    <color name="md_deep_purple_50">#EDE7F6</color>
+    <color name="md_light_blue_A200XXX">#5040C4FF</color>
+    <color name="red">#FF0000</color>
+    <color name="gold">#FFA000</color>
+    <color name="coloCategoria">#5F5FC4</color>
+</resources>

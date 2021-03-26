@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootFragmentOrden"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/lbl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/lbl_tipo_pago"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/lbl_tipo_pago"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        android:gravity="left"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="Tipo de pago"
+        app:layout_constraintTop_toBottomOf="@id/lbl_title"/>
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/lbl_info_detalle"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_tipo_pago">
+
+        <RadioButton
+            android:id="@+id/radioBtnEfectivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_default"
+            android:text="Efectivo" />
+
+        <RadioButton
+            android:id="@+id/radioBtnTarjeta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:text="Tarjeta"/>
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/lbl_info_detalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        android:gravity="left"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="Informacion de la orden"
+        app:layout_constraintTop_toBottomOf="@id/radioGroup"/>
+
+    <TextView
+        android:id="@+id/lbl_direccion_pedido_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_default"
+        android:gravity="left"
+        android:textColor="@color/black"
+        android:text="Direccion de envio:"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/lbl_direccion_user"
+        app:layout_constraintTop_toBottomOf="@id/lbl_info_detalle"/>
+
+    <TextView
+        android:id="@+id/lbl_producto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:gravity="left"
+        android:textColor="@color/black"
+        android:text="Productos:"
+        android:visibility="visible"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/rv_carrito2"
+        app:layout_constraintTop_toBottomOf="@id/lbl_direccion_user"/>
+
+    <TextView
+        android:id="@+id/lbl_direccion_user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_default"
+        android:textColor="@color/primary"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/lbl_info_detalle"
+        app:layout_constraintLeft_toRightOf="@id/lbl_direccion_pedido_user"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/form_mandado_detalle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/lbl_producto"
+        app:layout_constraintBottom_toTopOf="@id/form_detalle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:id="@+id/txt_direccion_recogida_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Direcion recogida"
+            android:drawableEnd="@drawable/ic_email"
+            android:layout_margin="@dimen/margin_default"/>
+
+        <TextView
+            android:id="@+id/label_referencia_A_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Referencia punto A"
+            android:layout_margin="@dimen/margin_default"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/txt_direccion_entrega_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Direccion entrega"
+            android:drawableEnd="@drawable/ic_email"
+            android:layout_margin="@dimen/margin_default"/>
+
+        <TextView
+            android:id="@+id/txt_refencia_punto_B_detalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="Referencia punto B"
+            android:drawableEnd="@drawable/ic_home"
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:layout_margin="@dimen/margin_default"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_carrito2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_tiny"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/lbl_producto"
+        app:layout_constraintBottom_toTopOf="@id/form_detalle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:listitem="@layout/card_producto_orden"/>
+
+    <LinearLayout
+        android:id="@+id/form_detalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:layout_marginRight="@dimen/margin_default"
+        app:layout_constraintTop_toBottomOf="@id/rv_carrito2"
+        app:layout_constraintBottom_toTopOf="@id/btn_seguir_orden">
+
+        <TextView
+            android:id="@+id/lbl_codigo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default" />
+
+        <TextView
+            android:id="@+id/lbl_tiempo_entrega"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default" />
+
+        <TextView
+            android:id="@+id/lbl_sub_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default" />
+
+        <TextView
+            android:id="@+id/lbl_descuento"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default" />
+
+        <TextView
+            android:id="@+id/lbl_gasto_envio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/gold"
+            android:layout_margin="@dimen/margin_default"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/lbl_total_pedido_orden"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:textSize="@dimen/text_size_default"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_seguir_orden"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Seguimiento de la orden"
+        android:background="@color/gold"
+        android:layout_marginRight="@dimen/margin_default"
+        android:layout_marginLeft="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/form_detalle"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
