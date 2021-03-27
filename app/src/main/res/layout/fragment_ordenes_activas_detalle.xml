@@ -189,6 +189,16 @@
             android:layout_marginRight="@dimen/margin_default" />
 
         <TextView
+            android:id="@+id/lbl_gasto_envio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default" />
+
+        <TextView
             android:id="@+id/lbl_tiempo_entrega"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -210,16 +220,6 @@
 
         <TextView
             android:id="@+id/lbl_descuento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginLeft="@dimen/margin_default"
-            android:layout_marginRight="@dimen/margin_default" />
-
-        <TextView
-            android:id="@+id/lbl_gasto_envio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"

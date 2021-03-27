@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dameray.rider.R
 import com.dameray.rider.databinding.MenuFragmentActivityBinding
@@ -105,6 +106,7 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
         val transaction = manager.beginTransaction()
         when(id){
             0->{
+                manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 val fragmentPedido = FragmentOrdenes()
                 transaction.replace(R.id.container_fragmento,fragmentPedido)
                 //transaction.addToBackStack(null)
@@ -117,12 +119,14 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
             //    transaction.commit()
             //}
             2->{
+                manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 val fragmentPedido = FragmentViajes()
                 transaction.replace(R.id.container_fragmento,fragmentPedido)
                 //transaction.addToBackStack(null)
                 transaction.commit()
             }
             3->{
+                manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 val fragmentPedido = FragmentCuenta()
                 transaction.replace(R.id.container_fragmento,fragmentPedido)
                 //transaction.addToBackStack(null)

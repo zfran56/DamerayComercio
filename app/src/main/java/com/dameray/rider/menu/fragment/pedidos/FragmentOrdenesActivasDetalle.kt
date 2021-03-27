@@ -91,10 +91,10 @@ class FragmentOrdenesActivasDetalle(val view2: View): Fragment() , AdapterDispon
         }else{
              query = database.child(idUsuario.toString()).child(key.toString())
         }
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()){
-                    Log.w("DATA MERO", dataSnapshot.toString())
+                    Log.w("VALOR", dataSnapshot.toString())
                     val tipo = dataSnapshot.child("tipo").getValue().toString().toInt()
                     items.clear()
                     var totalVenta = 0.0
@@ -109,7 +109,7 @@ class FragmentOrdenesActivasDetalle(val view2: View): Fragment() , AdapterDispon
                     descuento = dataSnapshot.child("descuento").getValue().toString().toDouble()
 
                     lbl_total_pedido_orden.text = "Total: $ " + df.format(totalVenta).toString()
-                    lbl_subtotal.text = "Subtotal: $ " + df.format(subtotal).toString()
+                    lbl_subtotal.text = "SubTotal: $ " + df.format(subtotal).toString()
                     lbl_descuento.text = "Descuento: $ " + df.format(descuento).toString()
                     lbl_codigo.text =  "Cupón Aplicado:  " + codigo.toString()
 
@@ -120,7 +120,6 @@ class FragmentOrdenesActivasDetalle(val view2: View): Fragment() , AdapterDispon
                             items.add(producto)
                         }
                         lbl_direccion_user.text = "Direccion: " + dataSnapshot.child("direccion").getValue().toString()
-                        Log.w("DATA MERO", items.toString())
                         adapterProductoOrden = AdapterProductoOrden(items)
                         rv_carrito.adapter = adapterProductoOrden
                     }else{
@@ -152,7 +151,7 @@ class FragmentOrdenesActivasDetalle(val view2: View): Fragment() , AdapterDispon
                     adapterProductoOrden = AdapterProductoOrden(items)
                     rv_carrito.adapter = adapterProductoOrden
                     lbl_total_pedido_orden.text = "Total : $ 0.00"
-                    lbl_subtotal.text = "Subtotal: $ 0.00"
+                    lbl_subtotal.text = "SubTotal: $ 0.00"
                     lbl_descuento.text = "Descuento: $ 0.00"
                     lbl_codigo.text = ""
                     lbl_tiempo_entrega.text = "Tiempo de entrega:"
