@@ -94,7 +94,6 @@ class FragmentOrdenesActivasDetalle(val view2: View): Fragment() , AdapterDispon
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()){
-                    Log.w("VALOR", dataSnapshot.toString())
                     val tipo = dataSnapshot.child("tipo").getValue().toString().toInt()
                     items.clear()
                     var totalVenta = 0.0

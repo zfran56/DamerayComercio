@@ -1,13 +1,10 @@
 package com.dameray.rider.menu
 
-import android.app.ActivityManager
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
@@ -19,11 +16,11 @@ import com.dameray.rider.menu.fragment.FragmentCuenta
 import com.dameray.rider.menu.fragment.FragmentViajes
 import com.dameray.rider.menu.fragment.pedidos.FragmentOrdenes
 import com.dameray.rider.menu.model.MenuModel
-import com.dameray.rider.support.ServiceRider
+import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.menu_fragment_activity.*
 import java.text.DecimalFormat
-
 
 class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
 
@@ -31,28 +28,22 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
     val manager = supportFragmentManager
     var adapterMenu: AdapterMenu? = null
     var menu: ArrayList<MenuModel> = ArrayList()
-    lateinit var database: DatabaseReference
-    val df = DecimalFormat("#.##")
     var total = 0
     var idUsuario = 0
-    val serviceClass = ServiceRider::class.java
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.menu_fragment_activity)
 
+        val shared = this.getSharedPreferences("sheredUSER", Context.MODE_PRIVATE)
+        idUsuario = shared!!.getInt("id",0)
+
         val menus: ArrayList<MenuModel> = ArrayList()
         val OrdenesMenuModel = MenuModel(0, "Ordenes", resources.getDrawable(R.drawable.ic_pedidos))
-        val mandadoMenuModel = MenuModel(1, "Mandaditos", resources.getDrawable(R.drawable.ic_mandado))
-        val viajesMenuModel = MenuModel(2, "Viajes", resources.getDrawable(R.drawable.ic_viajes))
         val cuentaMenuModel = MenuModel(3, "Mi perfil", resources.getDrawable(R.drawable.ic_account))
-
         menus.add(OrdenesMenuModel)
-        //menus.add(mandadoMenuModel)
-        //menus.add(viajesMenuModel)
         menus.add(cuentaMenuModel)
-
         this.menu = menus
 
         adapterMenu = AdapterMenu(menus, this, this@MenuActivity)
@@ -67,14 +58,9 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
 
         animar()
 
-        val shared = this.getSharedPreferences("sheredUSER", Context.MODE_PRIVATE)
-        idUsuario = shared!!.getInt("id",0)
-
         loadCategorias()
 
         initToolbar()
-
-        //executeservice()
     }
 
     fun initToolbar(){

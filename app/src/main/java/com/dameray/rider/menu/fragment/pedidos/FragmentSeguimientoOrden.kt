@@ -18,7 +18,9 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.RecyclerView
 import com.badoo.mobile.util.WeakHandler
+import com.dameray.rider.API
 import com.dameray.rider.R
 import com.dameray.rider.menu.model.CarritoModel
 import com.dameray.rider.menu.model.DireccionMandadoModel
@@ -35,6 +37,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
+import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.maps.android.PolyUtil
 import kotlinx.android.synthetic.main.fragment_seguimiento_orden.view.*
@@ -45,6 +48,7 @@ import org.json.JSONObject
 class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     var i = 0
+    var i2 = 0
     lateinit var rootView : View
     lateinit var database: DatabaseReference
     lateinit var database2: DatabaseReference
@@ -94,15 +98,29 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                     estadoFirebase = 4
                     statusFirebase = "Asignado a rider: " + name
                 }else if(estado == 4){
-                    rootView.btn_aceptar_orden.text = "Ir a punto A /Comercio"
-                    rootView.btn_aceptar_orden.setBackgroundResource(R.color.gold)
-                    estadoFirebase = 5
-                    statusFirebase = "Orden en camino"
+                    if(tipoFirebase == 0) {
+                        rootView.btn_aceptar_orden.text = "Ir a punto del comercio"
+                        rootView.btn_aceptar_orden.setBackgroundResource(R.color.gold)
+                        estadoFirebase = 5
+                        statusFirebase = "El rider se dirige al comercio"
+                    }else{
+                        rootView.btn_aceptar_orden.text = "Ir a punto de Recogida"
+                        rootView.btn_aceptar_orden.setBackgroundResource(R.color.gold)
+                        estadoFirebase = 5
+                        statusFirebase = "El rider se dirige a recoger el mandado"
+                    }
                 } else if(estado == 5){
-                    rootView.btn_aceptar_orden.text = "Ir a punto B /Cliente"
-                    rootView.btn_aceptar_orden.setBackgroundResource(R.color.gold)
-                    estadoFirebase = 6
-                    statusFirebase = "Orden en camino"
+                    if(tipoFirebase == 0 ){
+                        rootView.btn_aceptar_orden.text = "Ir a punto del cliente"
+                        rootView.btn_aceptar_orden.setBackgroundResource(R.color.gold)
+                        estadoFirebase = 6
+                        statusFirebase = "El rider se dirige a Entregar el producto"
+                    }else{
+                        rootView.btn_aceptar_orden.text = "Ir a punto de entrega"
+                        rootView.btn_aceptar_orden.setBackgroundResource(R.color.gold)
+                        estadoFirebase = 6
+                        statusFirebase = "El rider se dirige a Entregar el mandado"
+                    }
                 }else if(estado == 6){
                     rootView.btn_aceptar_orden.text = "Finalizar orden"
                     rootView.btn_aceptar_orden.setBackgroundResource(R.color.red)
@@ -132,7 +150,7 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                     }
                     loadRecogida()
                     loadEntrega()
-                    //requestMapaMandado()
+                    requestMapaMandado()
                 }
                 rootView.lbl_orden.text = datoOrdenesActivas!![0].status
                 if(estado == 5){
@@ -209,17 +227,70 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
         rootView.btn_aceptar_orden.setOnClickListener {
             if(estadoFirebase == 4){
                 dialogRecorrido("¿Desea asignarse esta orden?")
-            }else if(estadoFirebase == 5 && !locationManager!!.isProviderEnabled( LocationManager.GPS_PROVIDER )){
+            }else if(estadoFirebase == 5 && !locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                 AlertNoGps()
             }else if(estadoFirebase == 5 && locationManager!!.isProviderEnabled( LocationManager.GPS_PROVIDER )){
-                dialogRecorrido("¿Desea comenzar recorrido hacia el punto A /Comercio?")
+                if(tipoFirebase == 0 ){
+                    dialogRecorrido("¿Desea comenzar recorrido hacia el comercio?")
+                }else{
+                    dialogRecorrido("¿Desea comenzar recorrido hacia el punto A /Recogida?")
+                }
             }else if(estadoFirebase == 6 && locationManager!!.isProviderEnabled( LocationManager.GPS_PROVIDER )){
-                dialogRecorrido("¿Desea comenzar recorrido hacia el punto B /Cliente?")
+                if(tipoFirebase == 0){
+                    dialogRecorrido("¿Desea comenzar recorrido hacia el cliente?")
+                }else{
+                    dialogRecorrido("¿Desea comenzar recorrido hacia el punto B /Entrega?")
+                }
             }else if (estadoFirebase == 7) {
                 dialogRecorrido("¿Desea finalizar orden?")
             }
         }
         return root
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (listenerSeguimientoOrden!= null) {
+            database.removeEventListener(listenerSeguimientoOrden)
+        }
+        mSeekHandler.removeCallbacks(mSeekRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (listenerSeguimientoOrden!= null) {
+            database.removeEventListener(listenerSeguimientoOrden)
+        }
+        mSeekHandler.removeCallbacks(mSeekRunnable)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (listenerSeguimientoOrden!= null) {
+            database.removeEventListener(listenerSeguimientoOrden)
+        }
+        mSeekHandler.removeCallbacks(mSeekRunnable)
+    }
+
+    fun changeEstado(){
+        try {
+            doAsync {
+                val url = API.ESTADO_ORDEN + 7 + "/" + idUsuario + "/" + datoOrdenesActivas!![0].key.toString()
+                val response: String = download.getData(url)
+                requireActivity().runOnUiThread{
+                    if(response!= ""){
+                        try {
+                            val jsonObject = JSONObject(response)
+                            val code = jsonObject.getInt("code")
+                        }catch (e:Exception){
+                            Log.w("ERROR", e.toString())
+                        }
+                    }
+                }
+            }.execute()
+        }catch (e:Exception){
+            Log.w("ERROR", e.toString())
+        }
     }
 
     fun modificarOrden(){
@@ -261,6 +332,7 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
             if(estadoFirebase == 7){
                 mSeekHandler.removeCallbacks(mSeekRunnable)
                 database.child(datoOrdenesActivas!!.get(0).key.toString()).removeValue()
+                changeEstado()
                 if(tipoFirebase == 0){
                     database2.child("ordenes").child("comercios").child(datoOrdenesActivas!!.get(0).comercio!!.get(0).id.toString()).child(datoOrdenesActivas!![0].key.toString()).removeValue()
                     database2.child("ordenes").child("historial").child(datoOrdenesActivas!!.get(0).comercio!!.get(0).id.toString()).child(datoOrdenesActivas!![0].key.toString()).setValue(datoOrdenesActivas!![0])
@@ -274,75 +346,6 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
             }
         }catch (e : Exception){
             Log.w("Error", e.toString())
-        }
-    }
-
-    fun requestMapa(){
-        try {
-            doAsync {
-                val url = "https://maps.googleapis.com/maps/api/directions/json?origin="+datoOrdenesActivas!!.get(0).comercio!!.get(0).lat!!+","+ datoOrdenesActivas!!.get(0).comercio!!.get(0).long!!+"&destination="+datoOrdenesActivas!!.get(0).usuario_lat+","+datoOrdenesActivas!!.get(0).usuario_long+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
-                val response: String = download.getData(url)
-                activity!!.runOnUiThread{
-                    if(response!= ""){
-                        try {
-                            val json =  JSONObject(response)
-                            trazarRuta(json,1)
-                        }catch (e:Exception){
-                           Log.w("ERROR", e.toString())
-                        }
-                    }
-                }
-            }.execute()
-        }catch (e:Exception){
-            Log.w("ERROR", e.toString())
-        }
-    }
-
-    fun requestMapaRider(latitud :String, longitud : String){
-        try {
-            doAsync {
-                var url = ""
-                val estado = estadoFirebase - 1
-                if(estado == 5){
-                    url = "https://maps.googleapis.com/maps/api/directions/json?origin="+datoOrdenesActivas!!.get(0).comercio!!.get(0).lat!!+","+ datoOrdenesActivas!!.get(0).comercio!!.get(0).long!!+"&destination="+latitud+","+longitud+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
-                }else if (estado == 6){
-                    url = "https://maps.googleapis.com/maps/api/directions/json?origin="+datoOrdenesActivas!!.get(0).usuario_lat+","+ datoOrdenesActivas!!.get(0).usuario_long+"&destination="+latitud+","+longitud+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
-                }
-                val response: String = download.getData(url)
-                activity!!.runOnUiThread{
-                    if(response!= ""){
-                        try {
-                            val json =  JSONObject(response)
-                            trazarRuta(json, 0)
-                        }catch (e:Exception){
-                            Log.w("ERROR", e.toString())
-                        }
-                    }
-                }
-            }.execute()
-        }catch (e:Exception){
-            Log.w("ERROR", e.toString())
-        }
-    }
-
-    fun requestMapaMandado(){
-        try {
-            doAsync {
-                val url = "https://maps.googleapis.com/maps/api/directions/json?origin="+itemMandado.get(0).lat_recogida+","+ itemMandado.get(0).long_recogida+"&destination="+itemMandado.get(0).lat_entrega!!+","+itemMandado.get(0).long_entrega!!+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
-                val response: String = download.getData(url)
-                activity!!.runOnUiThread{
-                    if(response!= ""){
-                        try {
-                            val json =  JSONObject(response)
-                            trazarRuta(json, 1)
-                        }catch (e:Exception){
-                            Log.w("ERROR", e.toString())
-                        }
-                    }
-                }
-            }.execute()
-        }catch (e:Exception){
-            Log.w("ERROR", e.toString())
         }
     }
 
@@ -463,13 +466,131 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                     database.child(idUsuario.toString()).child(key0.toString()).child("rider").child("0").child("long").setValue(lastLocation.longitude)
                     database2.child("ordenes").child("clientes").child(datoOrdenesActivas!!.get(0).usuario_id.toString()).child(datoOrdenesActivas!![0].key.toString()).child("rider").child("0").child("lat").setValue(lastLocation.latitude)
                     database2.child("ordenes").child("clientes").child(datoOrdenesActivas!!.get(0).usuario_id.toString()).child(datoOrdenesActivas!![0].key.toString()).child("rider").child("0").child("long").setValue(lastLocation.longitude)
-                    requestMapaRider(location.latitude.toString(),location.longitude.toString())
+                    if(i2 <= 1){
+                        if(tipoFirebase == 0){
+                            requestMapaRider(location.latitude.toString(),location.longitude.toString())
+                            requestMapaRiderComerioUser()
+                        }else{
+                            requestMapaRiderMandado(location.latitude.toString(),location.longitude.toString())
+                            requestMapaRiderComerioUserMandado()
+                        }
+                    }
+                    i2 += 1
                 }
             }
             mSeekHandler.removeCallbacks(mSeekRunnable)
             mSeekHandler.postDelayed(mSeekRunnable, 5000)
         }catch (e : JSONException){
             Log.w("error", e.printStackTrace().toString())
+        }
+    }
+
+    fun requestMapaRiderMandado(latitud :String, longitud : String){
+        try {
+            doAsync {
+                var url = ""
+                url = "https://maps.googleapis.com/maps/api/directions/json?origin="+latitud+","+ longitud+"&destination="+itemMandado.get(0).lat_recogida+","+itemMandado.get(0).long_recogida+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
+                val response: String = download.getData(url)
+                activity!!.runOnUiThread{
+                    if(response!= ""){
+                        try {
+                            val json =  JSONObject(response)
+                            trazarRuta(json, 0)
+                        }catch (e:Exception){
+                            Log.w("ERROR", e.toString())
+                        }
+                    }
+                }
+            }.execute()
+        }catch (e:Exception){
+            Log.w("ERROR", e.toString())
+        }
+    }
+
+    fun requestMapaRiderComerioUserMandado(){
+        try {
+            doAsync {
+                var url = ""
+                url = "https://maps.googleapis.com/maps/api/directions/json?origin="+itemMandado.get(0).lat_recogida+","+ itemMandado.get(0).long_recogida+"&destination="+datoOrdenesActivas!!.get(0).usuario_lat+","+datoOrdenesActivas!!.get(0).usuario_long+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
+                val response: String = download.getData(url)
+                activity!!.runOnUiThread{
+                    if(response!= ""){
+                        try {
+                            val json =  JSONObject(response)
+                            trazarRuta(json, 1)
+                        }catch (e:Exception){
+                            Log.w("ERROR", e.toString())
+                        }
+                    }
+                }
+            }.execute()
+        }catch (e:Exception){
+            Log.w("ERROR", e.toString())
+        }
+    }
+
+    fun requestMapaRider(latitud :String, longitud : String){
+        try {
+            doAsync {
+                var url = ""
+                url = "https://maps.googleapis.com/maps/api/directions/json?origin="+latitud+","+ longitud+"&destination="+datoOrdenesActivas!!.get(0).comercio!!.get(0).lat!!+","+datoOrdenesActivas!!.get(0).comercio!!.get(0).long!!+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
+                val response: String = download.getData(url)
+                activity!!.runOnUiThread{
+                    if(response!= ""){
+                        try {
+                            val json =  JSONObject(response)
+                            trazarRuta(json, 0)
+                        }catch (e:Exception){
+                            Log.w("ERROR", e.toString())
+                        }
+                    }
+                }
+            }.execute()
+        }catch (e:Exception){
+            Log.w("ERROR", e.toString())
+        }
+    }
+
+    fun requestMapaRiderComerioUser(){
+        try {
+            doAsync {
+                var url = ""
+                url = "https://maps.googleapis.com/maps/api/directions/json?origin="+datoOrdenesActivas!!.get(0).comercio!!.get(0).lat!!+","+ datoOrdenesActivas!!.get(0).comercio!!.get(0).long!!+"&destination="+datoOrdenesActivas!!.get(0).usuario_lat+","+datoOrdenesActivas!!.get(0).usuario_long+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
+                val response: String = download.getData(url)
+                activity!!.runOnUiThread{
+                    if(response!= ""){
+                        try {
+                            val json =  JSONObject(response)
+                            trazarRuta(json, 1)
+                        }catch (e:Exception){
+                            Log.w("ERROR", e.toString())
+                        }
+                    }
+                }
+            }.execute()
+        }catch (e:Exception){
+            Log.w("ERROR", e.toString())
+        }
+    }
+
+    fun requestMapaMandado(){
+        try {
+            doAsync {
+                val url = "https://maps.googleapis.com/maps/api/directions/json?origin="+itemMandado.get(0).lat_recogida+","+ itemMandado.get(0).long_recogida+"&destination="+itemMandado.get(0).lat_entrega!!+","+itemMandado.get(0).long_entrega!!+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
+                val response: String = download.getData(url)
+                activity!!.runOnUiThread{
+                    if(response!= ""){
+                        try {
+                            val json =  JSONObject(response)
+                            trazarRuta(json, 1)
+                        }catch (e:Exception){
+                            Log.w("ERROR", e.toString())
+                        }
+                    }
+                }
+            }.execute()
+        }catch (e:Exception){
+            Log.w("ERROR", e.toString())
         }
     }
 
@@ -487,30 +608,6 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
             ) { dialog, id -> dialog.cancel() }.create().show()
     }
 
-    override fun onStop() {
-        super.onStop()
-        if (listenerSeguimientoOrden!= null) {
-            database.removeEventListener(listenerSeguimientoOrden)
-        }
-        mSeekHandler.removeCallbacks(mSeekRunnable)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (listenerSeguimientoOrden!= null) {
-            database.removeEventListener(listenerSeguimientoOrden)
-        }
-        mSeekHandler.removeCallbacks(mSeekRunnable)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (listenerSeguimientoOrden!= null) {
-            database.removeEventListener(listenerSeguimientoOrden)
-        }
-        mSeekHandler.removeCallbacks(mSeekRunnable)
-    }
-
     private fun trazarRuta(jso: JSONObject, option : Int) {
         val jRoutes: JSONArray
         var jLegs: JSONArray
@@ -526,7 +623,6 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                         val polyline =
                             "" + ((jSteps.get(k) as JSONObject).get("polyline") as JSONObject).get("points")
                         val list: List<LatLng> = PolyUtil.decode(polyline)
-                        //line!!.remove()
                         line = mMap.addPolyline(
                             if(option == 1){
                                 PolylineOptions().addAll(list).color(Color.RED).width(5F)
