@@ -7,4 +7,5 @@ object API {
     const val LOGIN = "$servidor$puerto/api/auth/login"
     const val ESTADORIDER = "$servidor$puerto/api/comercio/rider/"
     const val ESTADO_ORDEN = "$servidor$puerto/api/comercio/estadoorden/"
+    const val TOKEN_FIREBASE = "$servidor$puerto/api/token"
 }

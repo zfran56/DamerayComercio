@@ -57,7 +57,8 @@ class SplashActivty : AppCompatActivity() {
             // Log and toast
             //val msg = getString(R.string.msg_token_fmt, token)
             Log.d("token firebase", token.toString())
-            Toast.makeText(baseContext, token.toString(), Toast.LENGTH_SHORT).show()
+          //  Toast.makeText(baseContext, token.toString(), Toast.LENGTH_SHORT).show()
+            tokenFirebase(token.toString())
         })
     }
 
@@ -140,6 +141,29 @@ class SplashActivty : AppCompatActivity() {
             initLogin()
         }
     }
+    fun tokenFirebase(mitoken: String){
+        Log.d("token 3 ", mitoken.toString())
+        val shared = this.getSharedPreferences("sheredUSER", Context.MODE_PRIVATE)
+        val usuario = shared.getInt("id", 0)
+        Log.d("token 4 ", usuario.toString())
+            doAsync {
+                val data = download.tokenFirebase(API.TOKEN_FIREBASE, mitoken!!,usuario!!)
+                this.runOnUiThread{
+                    if(data != ""){
+                        try {
+                            val jsonObject = JSONObject(data)
+                            val code = jsonObject.getInt("code")
+                            if(code == 200){
+                               Log.w("Fierebase ",code.toString())
+                            }
+                        }catch (e: Exception){
+                            //alertError("Ha ocurrido un error al traer los datos.")
+                        }
+                    }
+                }
+            }.execute()
+
+    }
 
     fun activarRider(){
         doAsync {
@@ -168,6 +192,7 @@ class SplashActivty : AppCompatActivity() {
             }
         }.execute()
     }
+
 
     fun alertRider(mensaje : String){
         val alertDialogBuilder = AlertDialog.Builder(this)

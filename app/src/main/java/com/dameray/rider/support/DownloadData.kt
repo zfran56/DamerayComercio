@@ -234,4 +234,31 @@ class DownloadData {
             return e.toString()
         }
     }
+    fun tokenFirebase(url: String, token:String,id : Int): String {
+        try {
+            var result = ""
+            val httpBuilder = HttpUrl.parse(url)!!.newBuilder()
+            val jsonObject = JSONObject()
+            jsonObject.put("token", token)
+            jsonObject.put("id", id.toString())
+            Log.d("token 5",token.toString())
+            Log.d("token 7",id.toString())
+            val JSON = MediaType.parse("application/json; charset=utf-8")
+            val body = RequestBody.create(JSON, jsonObject.toString())
+            val request: Request = Request.Builder()
+                .header("Content-Type", "application/json")
+                .post(body)
+                .url(httpBuilder.build()).build()
+            client.newCall(request).execute().use { response ->
+                Log.d("token 5",response.toString())
+                if (response.code() == 200) {
+                    result = response.body()!!.string().trim()
+                }
+            }
+            return result
+        }
+        catch (e: java.lang.Exception) {
+            return e.toString()
+        }
+    }
 }
