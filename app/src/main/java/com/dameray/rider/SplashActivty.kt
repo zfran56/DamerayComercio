@@ -40,9 +40,9 @@ class SplashActivty : AppCompatActivity() {
 
         setContentView(R.layout.activity_splash)
 
-        animar()
+     //   animar()
 
-        animarTexview()
+       // animarTexview()
 
         splash()
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -51,14 +51,9 @@ class SplashActivty : AppCompatActivity() {
                 return@OnCompleteListener
             }
 
-            // Get new FCM registration token
-            val token = task.result
-
-            // Log and toast
-            //val msg = getString(R.string.msg_token_fmt, token)
-            Log.d("token firebase", token.toString())
-          //  Toast.makeText(baseContext, token.toString(), Toast.LENGTH_SHORT).show()
-            tokenFirebase(token.toString())
+          val token = task.result
+         Log.d("token firebase", token.toString())
+           tokenFirebase(token.toString())
         })
     }
 

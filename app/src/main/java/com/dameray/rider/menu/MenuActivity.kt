@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
+
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -16,11 +17,9 @@ import com.dameray.rider.menu.fragment.FragmentCuenta
 import com.dameray.rider.menu.fragment.FragmentViajes
 import com.dameray.rider.menu.fragment.pedidos.FragmentOrdenes
 import com.dameray.rider.menu.model.MenuModel
-import com.google.firebase.FirebaseApp
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+
 import kotlinx.android.synthetic.main.menu_fragment_activity.*
-import java.text.DecimalFormat
+
 
 class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
 
@@ -33,7 +32,7 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+       // requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = DataBindingUtil.setContentView(this, R.layout.menu_fragment_activity)
 
         val shared = this.getSharedPreferences("sheredUSER", Context.MODE_PRIVATE)
@@ -41,7 +40,7 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
 
         val menus: ArrayList<MenuModel> = ArrayList()
         val OrdenesMenuModel = MenuModel(0, "Ordenes", resources.getDrawable(R.drawable.ic_pedidos))
-        val cuentaMenuModel = MenuModel(3, "Mi perfil", resources.getDrawable(R.drawable.ic_account))
+        val cuentaMenuModel = MenuModel(1, "Mi perfil", resources.getDrawable(R.drawable.ic_account))
         menus.add(OrdenesMenuModel)
         menus.add(cuentaMenuModel)
         this.menu = menus
@@ -56,7 +55,7 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
             getSupportFragmentManager().popBackStackImmediate()
         }
 
-        animar()
+       // animar()
 
         loadCategorias()
 
@@ -98,23 +97,18 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
                 //transaction.addToBackStack(null)
                 transaction.commit()
             }
-            //1->{
-            //    val fragmentPedido = FragmentMandados()
-            //    transaction.replace(R.id.container_fragmento,fragmentPedido)
-            //    //transaction.addToBackStack(null)
-            //    transaction.commit()
-            //}
-            2->{
+
+           /* 2->{
                 manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 val fragmentPedido = FragmentViajes()
                 transaction.replace(R.id.container_fragmento,fragmentPedido)
                 //transaction.addToBackStack(null)
                 transaction.commit()
-            }
-            3->{
+            }*/
+            1->{
                 manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                val fragmentPedido = FragmentCuenta()
-                transaction.replace(R.id.container_fragmento,fragmentPedido)
+                val fragmentCuenta = FragmentCuenta()
+                transaction.replace(R.id.container_fragmento,fragmentCuenta)
                 //transaction.addToBackStack(null)
                 transaction.commit()
             }
@@ -156,4 +150,6 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
             else -> super.onKeyUp(keyCode, event)
         }
     }
+
+
 }

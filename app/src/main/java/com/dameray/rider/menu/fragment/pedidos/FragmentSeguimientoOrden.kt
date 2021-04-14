@@ -272,10 +272,10 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
         mSeekHandler.removeCallbacks(mSeekRunnable)
     }
 
-    fun changeEstado(){
+    fun changeEstado(estado:Int){
         try {
             doAsync {
-                val url = API.ESTADO_ORDEN + 7 + "/" + idUsuario + "/" + datoOrdenesActivas!![0].key.toString()
+                val url = API.ESTADO_ORDEN + estado + "/" + idUsuario + "/" + datoOrdenesActivas!![0].key.toString()
                 val response: String = download.getData(url)
                 requireActivity().runOnUiThread{
                     if(response!= ""){
@@ -325,14 +325,17 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
             }
 
             if(estadoFirebase == 4){
+
                 database.child(datoOrdenesActivas!!.get(0).key.toString()).removeValue()
                 loadOrdenesAsignadas()
-            }
 
+            }
+            changeEstado(estadoFirebase)
+            //actualiza el estado orden manda notificaciones
             if(estadoFirebase == 7){
                 mSeekHandler.removeCallbacks(mSeekRunnable)
                 database.child(datoOrdenesActivas!!.get(0).key.toString()).removeValue()
-                changeEstado()
+                //changeEstado(7)
                 if(tipoFirebase == 0){
                     database2.child("ordenes").child("comercios").child(datoOrdenesActivas!!.get(0).comercio!!.get(0).id.toString()).child(datoOrdenesActivas!![0].key.toString()).removeValue()
                     database2.child("ordenes").child("historial").child(datoOrdenesActivas!!.get(0).comercio!!.get(0).id.toString()).child(datoOrdenesActivas!![0].key.toString()).setValue(datoOrdenesActivas!![0])

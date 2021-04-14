@@ -38,7 +38,10 @@ class FragmentCuenta : Fragment(){
 
         return root
     }
+    override fun onDestroy() {
+        super.onDestroy()
 
+    }
     fun desactivarRider(){
         doAsync {
             val shared =  this.context?.getSharedPreferences("sheredUSER", Context.MODE_PRIVATE)

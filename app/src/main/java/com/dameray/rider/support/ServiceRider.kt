@@ -32,9 +32,9 @@ class ServiceRider : Service() {
 
     override fun onCreate() {
         Log.d("TAG", "Servicio creado...")
-        mHandler = Handler()
-        mRunnable = Runnable { ConnectToFirebase() }
-        mHandler.postDelayed(mRunnable, 2500)
+       // mHandler = Handler()
+       // mRunnable = Runnable { ConnectToFirebase() }
+       // mHandler.postDelayed(mRunnable, 2500)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
