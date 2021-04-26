@@ -51,7 +51,7 @@ class FragmentOrdenesDisponibles(val view2 : View): Fragment() , AdapterDisponib
         idUsuario = shared!!.getInt("id",0)
 
         //firebase
-        database = FirebaseDatabase.getInstance().reference
+       database = FirebaseDatabase.getInstance().reference
         database =  database.child("ordenes")
 
         this.context?.let { FirebaseApp.initializeApp(it)}
@@ -64,7 +64,7 @@ class FragmentOrdenesDisponibles(val view2 : View): Fragment() , AdapterDisponib
 
         loadingMessage!!.alertload("Cargando ordenes disponibles...")
 
-        val query: Query = database.child("disponibles").orderByChild("estado").equalTo(2.0)
+       val query: Query = database.child("disponibles").orderByChild("estado").equalTo(2.0)
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()){

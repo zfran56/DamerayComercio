@@ -40,7 +40,6 @@ class FragmentCuenta : Fragment(){
     }
     override fun onDestroy() {
         super.onDestroy()
-
     }
     fun desactivarRider(){
         doAsync {

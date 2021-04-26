@@ -15,6 +15,7 @@ class AdapterMenu (private var items: ArrayList<MenuModel>,
 
     interface OnMenuListener {
         fun onItemClick(position: Int, menu: MenuModel?)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

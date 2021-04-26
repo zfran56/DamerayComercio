@@ -23,7 +23,7 @@
             android:resource="@xml/network_security_config" />
 
 
-        <activity android:name=".SplashActivty"
+        <activity android:name="com.dameray.rider.SplashActivty"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true">
@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.LoginActivity"
+            android:name="com.dameray.rider.login.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -42,7 +42,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".menu.MenuActivity"
+            android:name="com.dameray.rider.menu.MenuActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

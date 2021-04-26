@@ -32,6 +32,7 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = DataBindingUtil.setContentView(this, R.layout.menu_fragment_activity)
 
@@ -88,13 +89,13 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
     }
 
     fun getFragment(id: Int){
-        val transaction = manager.beginTransaction()
+            val transaction = manager.beginTransaction()
         when(id){
             0->{
                 manager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 val fragmentPedido = FragmentOrdenes()
                 transaction.replace(R.id.container_fragmento,fragmentPedido)
-                //transaction.addToBackStack(null)
+               // transaction.addToBackStack(null)
                 transaction.commit()
             }
 
@@ -150,6 +151,5 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
             else -> super.onKeyUp(keyCode, event)
         }
     }
-
 
 }
