@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.KeyEvent
 
 import android.view.animation.AnimationUtils
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
@@ -36,6 +37,7 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
     var total = 0
     var idUsuario = 0
     var download = DownloadData()
+    @Nullable
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
