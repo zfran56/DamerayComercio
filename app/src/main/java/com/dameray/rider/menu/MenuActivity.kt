@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dameray.rider.API
 import com.dameray.rider.R
 import com.dameray.rider.databinding.MenuFragmentActivityBinding
 import com.dameray.rider.menu.adapter.AdapterMenu
@@ -17,8 +18,13 @@ import com.dameray.rider.menu.fragment.FragmentCuenta
 import com.dameray.rider.menu.fragment.FragmentViajes
 import com.dameray.rider.menu.fragment.pedidos.FragmentOrdenes
 import com.dameray.rider.menu.model.MenuModel
+import com.dameray.rider.support.DownloadData
+import com.dameray.rider.support.doAsync
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 import kotlinx.android.synthetic.main.menu_fragment_activity.*
+import org.json.JSONObject
 
 
 class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
@@ -29,7 +35,7 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
     var menu: ArrayList<MenuModel> = ArrayList()
     var total = 0
     var idUsuario = 0
-
+    var download = DownloadData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,6 +67,17 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
         loadCategorias()
 
         initToolbar()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("token", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            val token = task.result
+            Log.d("token firebase", token.toString())
+            tokenFirebase(token.toString())
+        })
     }
 
     fun initToolbar(){
@@ -140,6 +157,29 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
             this.menu[index] = c
         }
         adapterMenu!!.replaceData(this.menu)
+    }
+    fun tokenFirebase(mitoken: String){
+        Log.d("token 3 ", mitoken.toString())
+        val shared = this.getSharedPreferences("sheredUSER", Context.MODE_PRIVATE)
+        val usuario = shared.getInt("id", 0)
+        Log.d("token 4 ", usuario.toString())
+        doAsync {
+            val data = download.tokenFirebase(API.TOKEN_FIREBASE, mitoken!!,usuario!!)
+            this.runOnUiThread{
+                if(data != ""){
+                    try {
+                        val jsonObject = JSONObject(data)
+                        val code = jsonObject.getInt("code")
+                        if(code == 200){
+                            Log.w("Fierebase ",code.toString())
+                        }
+                    }catch (e: Exception){
+                        //alertError("Ha ocurrido un error al traer los datos.")
+                    }
+                }
+            }
+        }.execute()
+
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

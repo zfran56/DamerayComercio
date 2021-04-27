@@ -45,16 +45,7 @@ class SplashActivty : AppCompatActivity() {
        // animarTexview()
 
         splash()
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("token", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
 
-          val token = task.result
-         Log.d("token firebase", token.toString())
-           tokenFirebase(token.toString())
-        })
     }
 
     override fun onStart() {
@@ -135,29 +126,6 @@ class SplashActivty : AppCompatActivity() {
         }else{
             initLogin()
         }
-    }
-    fun tokenFirebase(mitoken: String){
-        Log.d("token 3 ", mitoken.toString())
-        val shared = this.getSharedPreferences("sheredUSER", Context.MODE_PRIVATE)
-        val usuario = shared.getInt("id", 0)
-        Log.d("token 4 ", usuario.toString())
-            doAsync {
-                val data = download.tokenFirebase(API.TOKEN_FIREBASE, mitoken!!,usuario!!)
-                this.runOnUiThread{
-                    if(data != ""){
-                        try {
-                            val jsonObject = JSONObject(data)
-                            val code = jsonObject.getInt("code")
-                            if(code == 200){
-                               Log.w("Fierebase ",code.toString())
-                            }
-                        }catch (e: Exception){
-                            //alertError("Ha ocurrido un error al traer los datos.")
-                        }
-                    }
-                }
-            }.execute()
-
     }
 
     fun activarRider(){
