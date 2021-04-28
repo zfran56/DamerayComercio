@@ -164,23 +164,26 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
         Log.d("token 3 ", mitoken.toString())
         val shared = this.getSharedPreferences("sheredUSER", Context.MODE_PRIVATE)
         val usuario = shared.getInt("id", 0)
-        Log.d("token 4 ", usuario.toString())
-        doAsync {
-            val data = download.tokenFirebase(API.TOKEN_FIREBASE, mitoken!!,usuario!!)
-            this.runOnUiThread{
-                if(data != ""){
-                    try {
-                        val jsonObject = JSONObject(data)
-                        val code = jsonObject.getInt("code")
-                        if(code == 200){
-                            Log.w("Fierebase ",code.toString())
+        if(usuario!=0){
+            Log.d("token 4 ", usuario.toString())
+            doAsync {
+                val data = download.tokenFirebase(API.TOKEN_FIREBASE, mitoken!!,usuario!!)
+                this.runOnUiThread{
+                    if(data != ""){
+                        try {
+                            val jsonObject = JSONObject(data)
+                            val code = jsonObject.getInt("code")
+                            if(code == 200){
+                                Log.w("Fierebase ",code.toString())
+                            }
+                        }catch (e: Exception){
+                            //alertError("Ha ocurrido un error al traer los datos.")
                         }
-                    }catch (e: Exception){
-                        //alertError("Ha ocurrido un error al traer los datos.")
                     }
                 }
-            }
-        }.execute()
+            }.execute()
+        }
+
 
     }
 

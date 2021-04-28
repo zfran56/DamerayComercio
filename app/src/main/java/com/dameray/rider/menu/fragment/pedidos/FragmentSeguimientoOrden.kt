@@ -140,17 +140,32 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                         val producto = CarritoModel(item.id.toString().toInt(),item.nombre.toString() ,item.precio ,item.cantidad,item.total.toString())
                         itemsProductos.add(producto)
                     }
-                    loadcomercio()
-                    loadUser()
+                    if(estadoFirebase==5){
+                        loadcomercio()
+                    }else if(estadoFirebase==6 || estadoFirebase==7){
+                        loadUser()
+                    }else if(estado==2){
+                        loadcomercio()
+                        loadUser()
+                    }
+
                     //requestMapa()
                 }else{
                     for (objeto in dataSnapshot.child("mandados").children) {
                         val item  = objeto.getValue(DireccionMandadoModel::class.java)!!
                         itemMandado.add(item)
                     }
-                    loadRecogida()
-                    loadEntrega()
-                    requestMapaMandado()
+
+
+                    if(estadoFirebase==5){
+                        loadRecogida()
+                    }else if(estadoFirebase==6 || estadoFirebase==7){
+                        loadEntrega()
+                    }else if(estado==2){
+                        loadRecogida()
+                        loadEntrega()
+                    }
+                   // requestMapaMandado()
                 }
                 rootView.lbl_orden.text = datoOrdenesActivas!![0].status
                 if(estado == 5){
@@ -464,12 +479,12 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                 if(location != null){
                     lastLocation =  location
                     val currentLatLong = LatLng(location.latitude,location.longitude)
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong,18f))
-                    database.child(idUsuario.toString()).child(key0.toString()).child("rider").child("0").child("lat").setValue(lastLocation.latitude)
-                    database.child(idUsuario.toString()).child(key0.toString()).child("rider").child("0").child("long").setValue(lastLocation.longitude)
-                    database2.child("ordenes").child("clientes").child(datoOrdenesActivas!!.get(0).usuario_id.toString()).child(datoOrdenesActivas!![0].key.toString()).child("rider").child("0").child("lat").setValue(lastLocation.latitude)
-                    database2.child("ordenes").child("clientes").child(datoOrdenesActivas!!.get(0).usuario_id.toString()).child(datoOrdenesActivas!![0].key.toString()).child("rider").child("0").child("long").setValue(lastLocation.longitude)
-                    if(i2 <= 1){
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong,15f))
+                   // database.child(idUsuario.toString()).child(key0.toString()).child("rider").child("0").child("lat").setValue(lastLocation.latitude)
+                   // database.child(idUsuario.toString()).child(key0.toString()).child("rider").child("0").child("long").setValue(lastLocation.longitude)
+                    //database2.child("ordenes").child("clientes").child(datoOrdenesActivas!!.get(0).usuario_id.toString()).child(datoOrdenesActivas!![0].key.toString()).child("rider").child("0").child("lat").setValue(lastLocation.latitude)
+                   // database2.child("ordenes").child("clientes").child(datoOrdenesActivas!!.get(0).usuario_id.toString()).child(datoOrdenesActivas!![0].key.toString()).child("rider").child("0").child("long").setValue(lastLocation.longitude)
+                  /*  if(i2 <= 1){
                         if(tipoFirebase == 0){
                             requestMapaRider(location.latitude.toString(),location.longitude.toString())
                             requestMapaRiderComerioUser()
@@ -479,6 +494,8 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                         }
                     }
                     i2 += 1
+                    */
+
                 }
             }
             mSeekHandler.removeCallbacks(mSeekRunnable)

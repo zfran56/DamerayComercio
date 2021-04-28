@@ -81,7 +81,7 @@ class LoginActivity: AppCompatActivity() {
                                 alertError("No autorizado, verifica tus datos.")
                             }
                         }catch (e:Exception){
-                            alertError("Ha ocurrido un error al traer los datos.")
+                            alertError("Ha ocurrido un error, verifique su conexion a internet")
                         }
                     }
                 }

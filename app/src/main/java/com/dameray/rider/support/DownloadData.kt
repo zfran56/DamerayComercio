@@ -171,7 +171,7 @@ class DownloadData {
             client.newCall(request).execute().use { response ->
                 if (response.code() == 200) {
                     result = response.body()!!.string().trim()
-                }else if(response.code() == 401){
+                }else {
                     result = response.body()!!.string().trim()
                 }
             }

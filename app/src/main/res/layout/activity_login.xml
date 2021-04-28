@@ -11,8 +11,8 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/logo"
-        android:layout_width="@dimen/size_logo_login"
-        android:layout_height="@dimen/size_logo_login"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:src="@drawable/dameray_logo"
         app:layout_constraintBottom_toTopOf="@id/form_email_login"
         app:layout_constraintTop_toTopOf="parent"
@@ -154,7 +154,8 @@
         android:id="@+id/check_remember"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recordar contraseña"
+        android:text="Sesion Activa"
+        android:checked="true"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/text_size_default"
