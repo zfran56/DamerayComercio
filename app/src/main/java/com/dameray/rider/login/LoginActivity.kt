@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
@@ -54,6 +55,7 @@ class LoginActivity: AppCompatActivity() {
             }
             doAsync {
                 val data = download.requestLogin(API.LOGIN, txt_correo.text.toString(),txt_password.text.toString(), remember!!,2)
+                Log.w("DATA LOGIN", data)
                 this.runOnUiThread{
                     if(data != ""){
                         try {
