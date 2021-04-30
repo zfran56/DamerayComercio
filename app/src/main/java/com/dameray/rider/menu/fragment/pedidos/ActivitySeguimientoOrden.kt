@@ -11,14 +11,9 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.RecyclerView
+import androidx.core.app.ActivityOptionsCompat
 import com.badoo.mobile.util.WeakHandler
 import com.dameray.rider.API
 import com.dameray.rider.R
@@ -37,22 +32,18 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
 import com.google.maps.android.PolyUtil
-import kotlinx.android.synthetic.main.fragment_seguimiento_orden.view.*
+import kotlinx.android.synthetic.main.activity_seguimiento_orden.*
+import kotlinx.android.synthetic.main.toolbar.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class ActivitySeguimientoOrden: AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     var i = 0
-    var i2 = 0
-    lateinit var rootView : View
     lateinit var database: DatabaseReference
     lateinit var database2: DatabaseReference
-    lateinit var appContext : Context
     var locationManager: LocationManager? = null
     private lateinit var fusedLocationCliente: FusedLocationProviderClient
     var idUsuario = 0
@@ -93,37 +84,37 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                 tipoFirebase = dataSnapshot.child("tipo").getValue().toString().toInt()
                 val estado = dataSnapshot.child("estado").getValue().toString().toInt()
                 if(estado == 2){
-                    rootView.btn_aceptar_orden.text = "Aceptar orden"
-                    rootView.btn_aceptar_orden.setBackgroundResource(R.color.colorAccent)
+                    btn_aceptar_orden.text = "Aceptar orden"
+                    btn_aceptar_orden.setBackgroundResource(R.color.colorAccent)
                     estadoFirebase = 4
                     statusFirebase = "Asignado a rider: " + name
                 }else if(estado == 4){
                     if(tipoFirebase == 0) {
-                        rootView.btn_aceptar_orden.text = "Ir a punto del comercio"
-                        rootView.btn_aceptar_orden.setBackgroundResource(R.color.gold)
+                        btn_aceptar_orden.text = "Ir a punto del comercio"
+                        btn_aceptar_orden.setBackgroundResource(R.color.gold)
                         estadoFirebase = 5
                         statusFirebase = "El rider se dirige al comercio"
                     }else{
-                        rootView.btn_aceptar_orden.text = "Ir a punto de Recogida"
-                        rootView.btn_aceptar_orden.setBackgroundResource(R.color.gold)
+                        btn_aceptar_orden.text = "Ir a punto de Recogida"
+                        btn_aceptar_orden.setBackgroundResource(R.color.gold)
                         estadoFirebase = 5
                         statusFirebase = "El rider se dirige a recoger el mandado"
                     }
                 } else if(estado == 5){
                     if(tipoFirebase == 0 ){
-                        rootView.btn_aceptar_orden.text = "Ir a punto del cliente"
-                        rootView.btn_aceptar_orden.setBackgroundResource(R.color.gold)
+                        btn_aceptar_orden.text = "Ir a punto del cliente"
+                        btn_aceptar_orden.setBackgroundResource(R.color.gold)
                         estadoFirebase = 6
                         statusFirebase = "El rider se dirige a Entregar el producto"
                     }else{
-                        rootView.btn_aceptar_orden.text = "Ir a punto de entrega"
-                        rootView.btn_aceptar_orden.setBackgroundResource(R.color.gold)
+                        btn_aceptar_orden.text = "Ir a punto de entrega"
+                        btn_aceptar_orden.setBackgroundResource(R.color.gold)
                         estadoFirebase = 6
                         statusFirebase = "El rider se dirige a Entregar el mandado"
                     }
                 }else if(estado == 6){
-                    rootView.btn_aceptar_orden.text = "Finalizar orden"
-                    rootView.btn_aceptar_orden.setBackgroundResource(R.color.red)
+                    btn_aceptar_orden.text = "Finalizar orden"
+                    btn_aceptar_orden.setBackgroundResource(R.color.red)
                     estadoFirebase = 7
                     statusFirebase = "Orden completada"
                 }
@@ -140,34 +131,29 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                         val producto = CarritoModel(item.id.toString().toInt(),item.nombre.toString() ,item.precio ,item.cantidad,item.total.toString())
                         itemsProductos.add(producto)
                     }
-                    if(estadoFirebase==5){
+                    if(estadoFirebase > 5){
                         loadcomercio()
-                    }else if(estadoFirebase==6 || estadoFirebase==7){
                         loadUser()
-                    }else if(estado==2){
+                    } else if(estado==2){
                         loadcomercio()
                         loadUser()
                     }
-
                     //requestMapa()
                 }else{
                     for (objeto in dataSnapshot.child("mandados").children) {
                         val item  = objeto.getValue(DireccionMandadoModel::class.java)!!
                         itemMandado.add(item)
                     }
-
-
-                    if(estadoFirebase==5){
+                    if(estadoFirebase > 5){
                         loadRecogida()
-                    }else if(estadoFirebase==6 || estadoFirebase==7){
                         loadEntrega()
-                    }else if(estado==2){
+                    } else if(estado==2){
                         loadRecogida()
                         loadEntrega()
                     }
                    // requestMapaMandado()
                 }
-                rootView.lbl_orden.text = datoOrdenesActivas!![0].status
+                lbl_orden.text = datoOrdenesActivas!![0].status
                 if(estado == 5){
                     mSeekHandler.removeCallbacks(mSeekRunnable)
                     mSeekHandler.postDelayed(mSeekRunnable, 5000)
@@ -187,22 +173,18 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val root = inflater.inflate(R.layout.fragment_seguimiento_orden, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        rootView = root
+        setContentView(R.layout.activity_seguimiento_orden)
 
-        val datosRecuperados = arguments
+        val key = intent.getIntExtra("key",0)
 
-        val key = datosRecuperados!!.getInt("key")
-
-        appContext = context!!.applicationContext
-
-        tipo0 = datosRecuperados.getInt("tipo")
+        tipo0 = intent.getIntExtra("tipo",0)
 
         key0 = key
 
-        val shared = this.context?.getSharedPreferences("sheredUSER", Context.MODE_PRIVATE)
+        val shared = getSharedPreferences("sheredUSER", Context.MODE_PRIVATE)
 
         idUsuario = shared!!.getInt("id",0)
 
@@ -212,14 +194,14 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
 
         database2 = FirebaseDatabase.getInstance().reference
 
-        locationManager = context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager?
 
         if(tipo0 == 0){
             database = database.child("ordenes").child("disponibles")
         }else{
             database = database.child("ordenes").child("asignadas")
         }
-        this.context?.let { FirebaseApp.initializeApp(it)}
+        this.let { FirebaseApp.initializeApp(it)}
 
         items.clear()
 
@@ -233,13 +215,13 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
 
         query.addValueEventListener(listenerSeguimientoOrden)
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
 
         mapFragment.getMapAsync(this)
 
-        fusedLocationCliente = LocationServices.getFusedLocationProviderClient(appContext)
+        fusedLocationCliente = LocationServices.getFusedLocationProviderClient(this)
 
-        rootView.btn_aceptar_orden.setOnClickListener {
+        btn_aceptar_orden.setOnClickListener {
             if(estadoFirebase == 4){
                 dialogRecorrido("¿Desea asignarse esta orden?")
             }else if(estadoFirebase == 5 && !locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)){
@@ -260,30 +242,39 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                 dialogRecorrido("¿Desea finalizar orden?")
             }
         }
-        return root
+
+        initToolbar()
+    }
+
+    fun initToolbar(){
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            title = "Tracking de orden"
+            setDisplayShowHomeEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return false
     }
 
     override fun onStop() {
         super.onStop()
-        if (listenerSeguimientoOrden!= null) {
-            database.removeEventListener(listenerSeguimientoOrden)
-        }
+        database.removeEventListener(listenerSeguimientoOrden)
         mSeekHandler.removeCallbacks(mSeekRunnable)
     }
 
     override fun onPause() {
         super.onPause()
-        if (listenerSeguimientoOrden!= null) {
-            database.removeEventListener(listenerSeguimientoOrden)
-        }
+        database.removeEventListener(listenerSeguimientoOrden)
         mSeekHandler.removeCallbacks(mSeekRunnable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (listenerSeguimientoOrden!= null) {
-            database.removeEventListener(listenerSeguimientoOrden)
-        }
+        database.removeEventListener(listenerSeguimientoOrden)
         mSeekHandler.removeCallbacks(mSeekRunnable)
     }
 
@@ -292,7 +283,7 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
             doAsync {
                 val url = API.ESTADO_ORDEN + estado + "/" + idUsuario + "/" + datoOrdenesActivas!![0].key.toString()
                 val response: String = download.getData(url)
-                requireActivity().runOnUiThread{
+                this.runOnUiThread{
                     if(response!= ""){
                         try {
                             val jsonObject = JSONObject(response)
@@ -340,10 +331,8 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
             }
 
             if(estadoFirebase == 4){
-
                 database.child(datoOrdenesActivas!!.get(0).key.toString()).removeValue()
                 loadOrdenesAsignadas()
-
             }
             changeEstado(estadoFirebase)
             //actualiza el estado orden manda notificaciones
@@ -368,18 +357,20 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
     }
 
     fun loadOrdenesAsignadas(){
-        val datosenviar = Bundle()
-        datosenviar.putInt("tipo", 1)
-        val fragmento: Fragment = FragmentOrdenesAsignadas(view2)
-        fragmento.arguments = datosenviar
-        val fragmentManager: FragmentManager = activity!!.supportFragmentManager
-        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.container_fragmento_ordenes, fragmento)
-        fragmentTransaction.commit()
+        try {
+            val intent = Intent(this, ActivityOrdenesAsignadas::class.java)
+            intent.putExtra("tipo", 1)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle()
+            startActivity(intent, bundle)
+        }catch (e: Exception){
+            Log.w("ERROR", e.toString())
+        }
     }
 
     private fun AlertNoGps() {
-        val alertDialogBuilder = AlertDialog.Builder(activity)
+        val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("DAMERAY")
         alertDialogBuilder
             .setMessage("El sistema GPS esta desactivado activalo para comenzar el recorrido.")
@@ -393,9 +384,10 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
         mMap = p0!!
         mMap.setOnMarkerClickListener(this)
         mMap.uiSettings.isZoomControlsEnabled = true
+        setUpMap()
         try {
             val success: Boolean = mMap.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(context as Activity, R.raw.style_json)
+                MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json)
             )
             if (!success) {
                 Log.e("TAG", "Style parsing failed.");
@@ -467,15 +459,15 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
 
     fun setUpMap(){
         try {
-            if(ActivityCompat.checkSelfPermission(requireActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+            if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
                     LOCATION_PERMISSION_REQUEST_CODE
                 )
                 return
             }
             mMap.isMyLocationEnabled = true
-            fusedLocationCliente.lastLocation.addOnSuccessListener(requireActivity()) { location ->
+            fusedLocationCliente.lastLocation.addOnSuccessListener(this) { location ->
                 if(location != null){
                     lastLocation =  location
                     val currentLatLong = LatLng(location.latitude,location.longitude)
@@ -495,7 +487,6 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                     }
                     i2 += 1
                     */
-
                 }
             }
             mSeekHandler.removeCallbacks(mSeekRunnable)
@@ -511,7 +502,7 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                 var url = ""
                 url = "https://maps.googleapis.com/maps/api/directions/json?origin="+latitud+","+ longitud+"&destination="+itemMandado.get(0).lat_recogida+","+itemMandado.get(0).long_recogida+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
                 val response: String = download.getData(url)
-                activity!!.runOnUiThread{
+                this.runOnUiThread{
                     if(response!= ""){
                         try {
                             val json =  JSONObject(response)
@@ -533,7 +524,7 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                 var url = ""
                 url = "https://maps.googleapis.com/maps/api/directions/json?origin="+itemMandado.get(0).lat_recogida+","+ itemMandado.get(0).long_recogida+"&destination="+datoOrdenesActivas!!.get(0).usuario_lat+","+datoOrdenesActivas!!.get(0).usuario_long+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
                 val response: String = download.getData(url)
-                activity!!.runOnUiThread{
+                this.runOnUiThread{
                     if(response!= ""){
                         try {
                             val json =  JSONObject(response)
@@ -555,7 +546,7 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                 var url = ""
                 url = "https://maps.googleapis.com/maps/api/directions/json?origin="+latitud+","+ longitud+"&destination="+datoOrdenesActivas!!.get(0).comercio!!.get(0).lat!!+","+datoOrdenesActivas!!.get(0).comercio!!.get(0).long!!+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
                 val response: String = download.getData(url)
-                activity!!.runOnUiThread{
+                this.runOnUiThread{
                     if(response!= ""){
                         try {
                             val json =  JSONObject(response)
@@ -577,7 +568,7 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
                 var url = ""
                 url = "https://maps.googleapis.com/maps/api/directions/json?origin="+datoOrdenesActivas!!.get(0).comercio!!.get(0).lat!!+","+ datoOrdenesActivas!!.get(0).comercio!!.get(0).long!!+"&destination="+datoOrdenesActivas!!.get(0).usuario_lat+","+datoOrdenesActivas!!.get(0).usuario_long+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
                 val response: String = download.getData(url)
-                activity!!.runOnUiThread{
+                this.runOnUiThread{
                     if(response!= ""){
                         try {
                             val json =  JSONObject(response)
@@ -598,7 +589,7 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
             doAsync {
                 val url = "https://maps.googleapis.com/maps/api/directions/json?origin="+itemMandado.get(0).lat_recogida+","+ itemMandado.get(0).long_recogida+"&destination="+itemMandado.get(0).lat_entrega!!+","+itemMandado.get(0).long_entrega!!+" + &key= AIzaSyAT5af7QLiSJ7mDBD96wCx07ZYtw82ZNfU ";
                 val response: String = download.getData(url)
-                activity!!.runOnUiThread{
+                this.runOnUiThread{
                     if(response!= ""){
                         try {
                             val json =  JSONObject(response)
@@ -615,7 +606,7 @@ class FragmentSeguimientoOrden(val view2 : View) : Fragment(), OnMapReadyCallbac
     }
 
     fun dialogRecorrido(mensaje: String){
-        val alertDialogBuilder = AlertDialog.Builder(activity)
+        val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle("DAMERAY")
         alertDialogBuilder
             .setMessage(mensaje)

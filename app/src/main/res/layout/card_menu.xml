@@ -12,14 +12,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/root"
         android:padding="@dimen/margin_default"
+        android:layout_margin="@dimen/margin_default"
         android:layout_width="match_parent"
-        android:background="@{menu.fondo ? @color/colorMenuSelect : @color/colorMenu}"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_main">
 
         <ImageView
             android:id="@+id/live_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_logo_register"
             android:src="@{menu.icon}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,8 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{ menu.alias }"
+            android:textSize="26sp"
             android:textAlignment="center"
-            android:textAppearance="?attr/textAppearanceHeadline5"
             android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/live_icon" />
 

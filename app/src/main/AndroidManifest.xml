@@ -45,13 +45,23 @@
         <activity
             android:name="com.dameray.rider.menu.MenuActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
-
-
-
+        <activity
+            android:name="com.dameray.rider.menu.fragment.pedidos.ActivityOrdenesDisponibles"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.dameray.rider.menu.fragment.pedidos.ActivityOrdenesActivasDetalle"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.dameray.rider.menu.fragment.pedidos.ActivitySeguimientoOrden"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.dameray.rider.menu.fragment.pedidos.ActivityOrdenesAsignadas"
+            android:screenOrientation="portrait">
+        </activity>
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter><action android:name="com.google.firebase.MESSAGING_EVENT"></action></intent-filter>
         </service>

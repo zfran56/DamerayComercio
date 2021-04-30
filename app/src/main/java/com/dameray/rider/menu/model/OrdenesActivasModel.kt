@@ -10,7 +10,7 @@ class OrdenesActivasModel{
     var rider: List<RaiderModel>? = null
     var usuario_lat: Any? = null
     var usuario_long: Any? = null
-    var descuento: Any? = null
+    var descuento: Any? = 0
     var usuario_referencia: Any? = null
     var tiempo_entrega: Int = 0
     var direccion: String? = null
