@@ -14,14 +14,17 @@
         android:padding="@dimen/margin_default"
         android:layout_margin="@dimen/margin_default"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/button_main">
+        android:layout_height="200dp"
+        android:background="@{menu.micolor}">
 
         <ImageView
             android:id="@+id/live_icon"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_logo_register"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@{menu.icon}"
+
+            android:layout_marginTop="50dp"
+            android:foregroundGravity="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{ menu.alias }"
-            android:textSize="26sp"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:textColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/live_icon" />

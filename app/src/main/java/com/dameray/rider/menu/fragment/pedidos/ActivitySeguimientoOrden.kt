@@ -38,6 +38,9 @@ import kotlinx.android.synthetic.main.toolbar.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ActivitySeguimientoOrden: AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -131,26 +134,24 @@ class ActivitySeguimientoOrden: AppCompatActivity(), OnMapReadyCallback, GoogleM
                         val producto = CarritoModel(item.id.toString().toInt(),item.nombre.toString() ,item.precio ,item.cantidad,item.total.toString())
                         itemsProductos.add(producto)
                     }
-                    if(estadoFirebase > 5){
+                    //if(estadoFirebase > 5){
                         loadcomercio()
                         loadUser()
-                    } else if(estado==2){
-                        loadcomercio()
-                        loadUser()
-                    }
+                    //} else if(estado==2){
+
+                  //  }
                     //requestMapa()
                 }else{
                     for (objeto in dataSnapshot.child("mandados").children) {
                         val item  = objeto.getValue(DireccionMandadoModel::class.java)!!
                         itemMandado.add(item)
                     }
-                    if(estadoFirebase > 5){
+                   // if(estadoFirebase > 5){
                         loadRecogida()
                         loadEntrega()
-                    } else if(estado==2){
-                        loadRecogida()
-                        loadEntrega()
-                    }
+                    //} else if(estado==2){
+
+                    //}
                    // requestMapaMandado()
                 }
                 lbl_orden.text = datoOrdenesActivas!![0].status
@@ -472,10 +473,19 @@ class ActivitySeguimientoOrden: AppCompatActivity(), OnMapReadyCallback, GoogleM
                     lastLocation =  location
                     val currentLatLong = LatLng(location.latitude,location.longitude)
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong,15f))
+                    val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+                    val currentDate = sdf.format(
+                        Date()
+                    )
+                    Log.d("date", currentDate)
+
                    // database.child(idUsuario.toString()).child(key0.toString()).child("rider").child("0").child("lat").setValue(lastLocation.latitude)
                    // database.child(idUsuario.toString()).child(key0.toString()).child("rider").child("0").child("long").setValue(lastLocation.longitude)
-                    //database2.child("ordenes").child("clientes").child(datoOrdenesActivas!!.get(0).usuario_id.toString()).child(datoOrdenesActivas!![0].key.toString()).child("rider").child("0").child("lat").setValue(lastLocation.latitude)
-                   // database2.child("ordenes").child("clientes").child(datoOrdenesActivas!!.get(0).usuario_id.toString()).child(datoOrdenesActivas!![0].key.toString()).child("rider").child("0").child("long").setValue(lastLocation.longitude)
+
+                    database2.child("ubicaciones").child(idUsuario.toString()).child("lat").setValue(lastLocation.latitude)
+                    database2.child("ubicaciones").child(idUsuario.toString()).child("long").setValue(lastLocation.longitude)
+                    database2.child("ubicaciones").child(idUsuario.toString()).child("fecha").setValue(currentDate)
+                    database2.child("ubicaciones").child(idUsuario.toString()).child("nombre").setValue(name)
                   /*  if(i2 <= 1){
                         if(tipoFirebase == 0){
                             requestMapaRider(location.latitude.toString(),location.longitude.toString())

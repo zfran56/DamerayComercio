@@ -91,21 +91,28 @@ class ActivityOrdenesActivasDetalle : AppCompatActivity() , AdapterDisponibles.O
                 if (dataSnapshot.exists()){
                     val tipo = dataSnapshot.child("tipo").getValue().toString().toInt()
                     items.clear()
-                    var totalVenta = 0.0
-                    var descuento = 0.0
-                    var estado = 0
-                    var subtotal= 0.0
-                    val codigo = dataSnapshot.child("codigo").getValue()
+                    var  totalVenta = dataSnapshot.child("total").getValue()?:0
+                    var descuento =  dataSnapshot.child("descuento").getValue()?:0
+                    var estado = 0.0
+                    var  subtotal = dataSnapshot.child("subtotal").getValue()?:0
+                    val codigo = dataSnapshot.child("codigo").getValue()?:""
 
-                    subtotal = dataSnapshot.child("subtotal").getValue().toString().toDouble()
-                    totalVenta = dataSnapshot.child("total").getValue().toString().toDouble()
-                    estado = dataSnapshot.child("estado").getValue().toString().toInt()
-                    descuento = dataSnapshot.child("descuento").getValue().toString().toDouble()
+
+
+
+                 /* if(dataSnapshot.child("descuento").exists()) {
+                      descuento =  dataSnapshot.child("descuento").getValue().toString().toDouble()
+                    } else{
+                      descuento=0.0;
+                    }*/
+                     if(dataSnapshot.child("estado").exists()) {
+                      estado =  dataSnapshot.child("estado").getValue().toString().toDouble()
+                    }
 
                     binding.lblTotalPedidoOrden.text = "Total: $ " + df.format(totalVenta).toString()
                     binding.lblSubTotal.text = "SubTotal: $ " + df.format(subtotal).toString()
                     binding.lblDescuento.text = "Descuento: $ " + df.format(descuento).toString()
-                    binding.lblCodigo.text =  "Cupón Aplicado:  " + codigo.toString()
+                    binding.lblCodigo.text =  "Cupón Aplicado:  " + codigo
 
                     if(tipo == 0){
                         for (objeto in dataSnapshot.child("productos").children) {
@@ -132,7 +139,7 @@ class ActivityOrdenesActivasDetalle : AppCompatActivity() , AdapterDisponibles.O
                         binding.txtRefenciaPuntoBDetalle.setText(Html.fromHtml("<b>Referencia entrega:</b> " +  itemMandado[0].ref_entrega))
                     }
                     binding.lblTiempoEntrega.text = "Tiempo de entrega: " + dataSnapshot.child("tiempo_entrega").getValue().toString() + " Minutos"
-                    binding.lblGastoEnvio.text = "Gasto de envio: " + df.format(dataSnapshot.child("cargo_envio_cliente").getValue()) + " $"
+                    binding.lblGastoEnvio.text = "Gasto de envio: " + df.format(dataSnapshot.child("cargo_envio_cliente").getValue()?:0) + " $"
                     metodoPago =  dataSnapshot.child("metodo_pago").getValue().toString().toInt()
                     if (metodoPago == 1) binding.radioBtnEfectivo.isChecked = true else binding.radioBtnTarjeta.isChecked = true
                     if(estado <= 6){

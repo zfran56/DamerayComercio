@@ -17,6 +17,11 @@ import com.dameray.rider.support.LoadAlert
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.text.SimpleDateFormat
+import java.time.Duration
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.time.hours
 
 class ActivityOrdenesDisponibles: AppCompatActivity() , AdapterDisponibles.OnOrdenesActivasListener {
 
@@ -67,6 +72,47 @@ class ActivityOrdenesDisponibles: AppCompatActivity() , AdapterDisponibles.OnOrd
                 if (dataSnapshot.exists()){
                     items.clear()
                     for (objeto in dataSnapshot.children) {
+                        val sdf = SimpleDateFormat("kk:mm:ss")
+                        val currentDate = sdf.format(
+                            Date()
+                        )
+                        if(objeto.child("hora").exists()){
+                            val hora_firebase= objeto.child("hora").getValue().toString()?:""
+
+                            Log.d("hora", currentDate)
+                            Log.d("hora orden", hora_firebase.toString()?:"")
+                            val startDate: Date = sdf.parse(hora_firebase)
+                            val startDate2: Date = sdf.parse(currentDate)
+
+                            var HoraApp=startDate2.hours.toInt()
+                            var HoraFireBD=startDate.hours.toInt()
+                            var Hdiferencia=HoraApp-HoraFireBD
+
+                            var MinApp=startDate2.minutes.toInt()
+                            var MinFireBD=startDate.minutes.toInt()
+                            var Mdiferencia=MinApp-MinFireBD
+
+                            if(Hdiferencia>0){
+                                Log.d("hora", Hdiferencia.toString())
+                            }else{
+                                if(Mdiferencia>=3){
+                                    Log.d("hora roja", Mdiferencia.toString())
+                                }else{
+                                    Log.d("hora normal", Mdiferencia.toString())
+                                }
+                            }
+
+
+                        }
+
+
+
+
+                        //method to get time between values
+
+                        //method to get time between values
+
+
                         val item  = objeto.getValue(OrdenesActivasModel::class.java)!!
                         item.key = objeto.key!!.toString().toInt()
                         items.add(item)

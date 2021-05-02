@@ -3,6 +3,8 @@ package com.dameray.rider.menu
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -42,9 +44,9 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
         idUsuario = shared!!.getInt("id",0)
 
         val menus: ArrayList<MenuModel> = ArrayList()
-        val OrdenesDisponibles = MenuModel(0, "Ordenes Disponibles", resources.getDrawable(R.drawable.ic_pedidos))
-        val OrdenesAsignadas = MenuModel(1, "Ordenes Asignadas", resources.getDrawable(R.drawable.ic_pedidos))
-        val cuentaMenuModel = MenuModel(2, "Mi perfil", resources.getDrawable(R.drawable.ic_account))
+        val OrdenesDisponibles = MenuModel(0, "Ordenes Disponibles", resources.getDrawable(R.drawable.ic_pedidos), R.color.naranja)
+        val OrdenesAsignadas = MenuModel(1, "Ordenes Asignadas", resources.getDrawable(R.drawable.ic_pedidos),R.color.gold)
+        val cuentaMenuModel = MenuModel(2, "Mi perfil", resources.getDrawable(R.drawable.ic_account),R.color.red)
         menus.add(OrdenesDisponibles)
         menus.add(OrdenesAsignadas)
         menus.add(cuentaMenuModel)
