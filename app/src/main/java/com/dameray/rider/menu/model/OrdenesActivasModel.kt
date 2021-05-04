@@ -23,6 +23,8 @@ class OrdenesActivasModel{
     var status: String? = null
     var comercio: List<ComercioModel>? = null
     var tipo: Int? = 0
+    var hora: String? = null
+    var mitiempo: Int? = 0
 
     fun validarcomercio() : Boolean{
         return comercio != null

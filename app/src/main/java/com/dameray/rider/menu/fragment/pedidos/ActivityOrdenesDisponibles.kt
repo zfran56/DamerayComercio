@@ -71,7 +71,9 @@ class ActivityOrdenesDisponibles: AppCompatActivity() , AdapterDisponibles.OnOrd
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()){
                     items.clear()
+
                     for (objeto in dataSnapshot.children) {
+                        var Hora:Int =0
                         val sdf = SimpleDateFormat("kk:mm:ss")
                         val currentDate = sdf.format(
                             Date()
@@ -92,13 +94,19 @@ class ActivityOrdenesDisponibles: AppCompatActivity() , AdapterDisponibles.OnOrd
                             var MinFireBD=startDate.minutes.toInt()
                             var Mdiferencia=MinApp-MinFireBD
 
+
                             if(Hdiferencia>0){
                                 Log.d("hora", Hdiferencia.toString())
+                                Hora=1;
                             }else{
                                 if(Mdiferencia>=3){
+                                    Hora=1;
                                     Log.d("hora roja", Mdiferencia.toString())
+                                    Log.d("hora aa", Hora.toString())
+
                                 }else{
                                     Log.d("hora normal", Mdiferencia.toString())
+                                    Hora=0;
                                 }
                             }
 
@@ -112,10 +120,12 @@ class ActivityOrdenesDisponibles: AppCompatActivity() , AdapterDisponibles.OnOrd
 
                         //method to get time between values
 
-
+                        Log.d("hora ante", Hora.toString())
                         val item  = objeto.getValue(OrdenesActivasModel::class.java)!!
                         item.key = objeto.key!!.toString().toInt()
+                        item.mitiempo = Hora
                         items.add(item)
+                        Log.d("hora model", item.mitiempo.toString())
                     }
                     adapterOrdenActivas = AdapterDisponibles(items,this@ActivityOrdenesDisponibles, appContext)
                     binding.rvOrdenesActivas.adapter = adapterOrdenActivas
