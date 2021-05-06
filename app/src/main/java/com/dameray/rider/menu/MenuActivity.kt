@@ -99,6 +99,7 @@ class MenuActivity : AppCompatActivity(), AdapterMenu.OnMenuListener {
                 var Mensaje:String=""
                 val intent = Intent(this, ActivityOrdenesDisponibles::class.java)
                 val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle()
+
                 val query: Query = database.child("activos").child(idUsuario.toString())
                 query.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {

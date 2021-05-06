@@ -1,6 +1,7 @@
 package com.dameray.rider.menu.fragment.pedidos
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -34,6 +35,7 @@ class ActivityOrdenesDisponibles: AppCompatActivity() , AdapterDisponibles.OnOrd
     var tipo = 0
 
     lateinit var database: DatabaseReference
+    lateinit var database2: DatabaseReference
 
     var loadingMessage : LoadAlert? = null
 
@@ -53,6 +55,7 @@ class ActivityOrdenesDisponibles: AppCompatActivity() , AdapterDisponibles.OnOrd
         idUsuario = shared!!.getInt("id",0)
 
         database = FirebaseDatabase.getInstance().reference
+        database2 = FirebaseDatabase.getInstance().reference
 
         database =  database.child("ordenes")
 
@@ -162,9 +165,19 @@ class ActivityOrdenesDisponibles: AppCompatActivity() , AdapterDisponibles.OnOrd
 
 
     override fun onItemClickOrdenesActivas(position: Int, ordenActiva: OrdenesActivasModel?) {
+
         loadOrdenesActivasDetalle(ordenActiva!!)
     }
+    private fun AlertRider(mensaje:String) {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle("DAMERAY RIDER")
+        alertDialogBuilder
+            .setMessage(mensaje)
+            .setCancelable(false)
+            .setPositiveButton("Aceptar") { dialog, id ->
 
+            }   .create().show()
+    }
     override fun onDestroy() {
         super.onDestroy()
         loadingMessage!!.stopAlert()
@@ -176,7 +189,48 @@ class ActivityOrdenesDisponibles: AppCompatActivity() , AdapterDisponibles.OnOrd
             intent.putExtra("key", ordenActivaDetalle.key)
             intent.putExtra("tipo", tipo)
             val bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(this as Activity).toBundle()
-            startActivity(intent, bundle)
+
+            var bloqueo:Int=0
+            var Mensaje:String=""
+            val query2: Query = database2.child("activos").child(idUsuario.toString())
+            query2.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    if (dataSnapshot.exists()){
+                        bloqueo = dataSnapshot.child("bloqueo").getValue().toString().toInt()?:0
+                        Mensaje = dataSnapshot.child("mensaje").getValue().toString()?:""
+                        Log.d("bloqueado c",bloqueo.toString())
+                        if(bloqueo.toString().toInt()==1){
+                            Log.d("bloqueado","bloqueado")
+                            bloqueo=1
+
+                        }else{
+                            Log.d("desbloqueado","desbloqueado")
+                            bloqueo=0
+                        }
+                    }else{
+                        Log.d("No bluqeado","No bloq")
+                        bloqueo=0
+
+                    }
+                    Log.d("antes if c",bloqueo.toString())
+                    if(bloqueo.toString().toInt()==0){
+                        startActivity(intent, bundle)
+
+                    }else{
+
+                        AlertRider(Mensaje)
+
+                        // This method will be executed once the timer is over
+
+                    }
+
+
+                    Log.d("dispo","dispo")
+                }
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+
         }catch (e: Exception){
             Log.w("ERROR", e.toString())
         }
