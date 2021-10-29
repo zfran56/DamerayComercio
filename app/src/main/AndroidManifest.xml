@@ -47,18 +47,7 @@
         <activity
             android:name="com.dameray.comercio.menu.MenuActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name="com.dameray.comercio.menu.fragment.pedidos.ActivityOrdenesDisponibles"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.dameray.comercio.menu.fragment.pedidos.ActivityOrdenesActivasDetalle"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.dameray.comercio.menu.fragment.pedidos.ActivitySeguimientoOrden"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.dameray.comercio.menu.fragment.pedidos.ActivityOrdenesAsignadas"
-            android:screenOrientation="portrait" />
+
 
         <service android:name="com.dameray.comercio.MyFirebaseMessagingService"
             android:exported="false"
