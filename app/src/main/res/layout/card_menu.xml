@@ -6,7 +6,7 @@
 
         <variable
             name="menu"
-            type="com.dameray.rider.menu.model.MenuModel" />
+            type="com.dameray.comercio.menu.model.MenuModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -36,9 +36,7 @@
         android:id="@+id/form_email_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_tiny"
-        android:padding="@dimen/margin_default"
-        android:layout_marginLeft="@dimen/margin_sides_login"
+       android:layout_marginLeft="@dimen/margin_sides_login"
         android:layout_marginRight="@dimen/margin_sides_login"
         app:layout_constraintBottom_toTopOf="@id/form_password_login"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -86,12 +84,10 @@
         android:id="@+id/form_password_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_default"
-        android:layout_marginTop="@dimen/margin_tiny"
+
         android:layout_marginLeft="@dimen/margin_sides_login"
         android:layout_marginRight="@dimen/margin_sides_login"
-        app:layout_constraintBottom_toTopOf="@+id/check_remember"
-        app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/form_email_login">
 
@@ -143,11 +139,31 @@
         android:textSize="@dimen/text_size_default"
         android:layout_marginLeft="@dimen/margin_sides_login"
         android:layout_marginRight="@dimen/margin_sides_login"
-        android:visibility="gone"
+            android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/form_password_login"
-        app:layout_constraintBottom_toTopOf="@id/button_login"/>
+      app:layout_constraintBottom_toTopOf="@id/button_login"/>
+
+    <TextView
+        android:id="@+id/lbl_olvidado_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_olvidado"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="18dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="5dp"
+        android:layout_marginLeft="@dimen/margin_sides_login"
+        android:layout_marginRight="@dimen/margin_sides_login"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_login"
+        app:layout_constraintBottom_toTopOf="@+id/lbl_register"/>
 
 
     <CheckBox
@@ -161,12 +177,10 @@
         android:textSize="@dimen/text_size_default"
         android:layout_marginLeft="@dimen/margin_sides_login"
         android:layout_marginRight="@dimen/margin_sides_login"
-        android:layout_marginTop="@dimen/margin_default"
-        android:layout_marginBottom="@dimen/margin_default"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/form_password_login"
-        app:layout_constraintBottom_toTopOf="@id/button_login"/>
+      />
 
     <Button
         android:id="@+id/button_login"
@@ -180,7 +194,6 @@
         android:textColor="@color/white"
         android:layout_marginLeft="@dimen/margin_sides_login"
         android:layout_marginRight="@dimen/margin_sides_login"
-        app:layout_constraintBottom_toTopOf="@id/lbl_register"
         app:layout_constraintTop_toBottomOf="@+id/check_remember"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>

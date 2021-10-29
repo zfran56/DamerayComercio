@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.dameray.rider"
+        applicationId "com.dameray.comercio"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -78,5 +78,6 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-
+//para direct message
+    implementation 'com.google.firebase:firebase-messaging-directboot:20.2.0'
 }

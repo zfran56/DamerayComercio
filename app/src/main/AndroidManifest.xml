@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dameray.rider">
+    package="com.dameray.comercio">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,8 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".menu.fragment.pedidos.ActivityCuenta"></activity>
-        <activity android:name=".ActivityCuenta" />
+        <activity android:name="com.dameray.comercio.ActivityBilletera"></activity>
+        <activity android:name="com.dameray.comercio.menu.fragment.pedidos.ActivityCuenta" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -26,7 +26,7 @@
             android:resource="@xml/network_security_config" />
 
         <activity
-            android:name=".SplashActivty"
+            android:name="com.dameray.comercio.SplashActivty"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true">
@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.LoginActivity"
+            android:name="com.dameray.comercio.login.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -45,25 +45,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".menu.MenuActivity"
+            android:name="com.dameray.comercio.menu.MenuActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".menu.fragment.pedidos.ActivityOrdenesDisponibles"
+            android:name="com.dameray.comercio.menu.fragment.pedidos.ActivityOrdenesDisponibles"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".menu.fragment.pedidos.ActivityOrdenesActivasDetalle"
+            android:name="com.dameray.comercio.menu.fragment.pedidos.ActivityOrdenesActivasDetalle"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".menu.fragment.pedidos.ActivitySeguimientoOrden"
+            android:name="com.dameray.comercio.menu.fragment.pedidos.ActivitySeguimientoOrden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".menu.fragment.pedidos.ActivityOrdenesAsignadas"
+            android:name="com.dameray.comercio.menu.fragment.pedidos.ActivityOrdenesAsignadas"
             android:screenOrientation="portrait" />
 
-        <service android:name=".MyFirebaseMessagingService">
+        <service android:name="com.dameray.comercio.MyFirebaseMessagingService"
+            android:exported="false"
+            android:directBootAware="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT">
+                </action></intent-filter>
         </service>
     </application>
 

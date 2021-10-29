@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DAMERAY RIDER</string>
+    <string name="app_name">DAMERAY COMERCIO</string>
     <string name="label_email">Correo</string>
     <string name="label_password">Contraseña</string>
     <string name="label_repeat">Repetir Contraseña</string>
@@ -20,5 +20,6 @@
     <string name="label_apellido">Apellidos</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="label_olvidado">¿Has olvidado tu contraseña?</string>
 
 </resources>
